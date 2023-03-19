@@ -44,6 +44,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,11 +56,11 @@ import androidx.compose.ui.tooling.preview.Wallpapers
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.manasmalla.ahamsvasth.R
-import com.manasmalla.ahamsvasth.ui.Destinations.DASHBOARD_ROUTE
+import com.manasmalla.ahamsvasth.ui.Destinations
 import com.manasmalla.ahamsvasth.ui.Destinations.SIGNUP_ROUTE
 import com.manasmalla.ahamsvasth.ui.Destinations.SIGN_IN_ROUTE
-import com.manasmalla.ahamsvasth.ui.Destinations.SURVEY_ROUTE
 import com.manasmalla.ahamsvasth.ui.theme.AhamSvasthaTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -71,6 +72,7 @@ fun WelcomeScreen(
 ) {
 
     val onboardingViewModel: OnboardingViewModel = viewModel()
+    val scope = rememberCoroutineScope()
 
     AnimatedContent(targetState = onboardingViewModel.uiState) { uiStateValue ->
         when (uiStateValue) {
@@ -94,30 +96,34 @@ fun WelcomeScreen(
                     )
                     SignInSection(
                         onHandleOnboardingTransaction = { username ->
-                            when (onboardingViewModel.onHandleOnboardingTransaction(username)) {
-                                SIGNUP_ROUTE -> {
-                                    onNavigateToSignUp(username)
-                                }
+                            scope.launch {
+                                when (onboardingViewModel.onHandleOnboardingTransaction(username)) {
+                                    SIGNUP_ROUTE -> {
+                                        onNavigateToSignUp(username)
+                                    }
 
-                                SIGN_IN_ROUTE -> {
-                                    onNavigateToSignIn(username)
-                                }
+                                    SIGN_IN_ROUTE -> {
+                                        onNavigateToSignIn(username)
+                                    }
 
-                                else -> {}
+                                    else -> {}
+                                }
                             }
                         },
                         onNavigateToSurvey = onNavigateToSurvey,
                         onContinueWithGoogle = {
-                            when (onboardingViewModel.onContinueWithGoogle()) {
-                                SURVEY_ROUTE -> {
-                                    onNavigateToSurvey()
-                                }
+                            scope.launch {
+                                when (onboardingViewModel.onContinueWithGoogle()) {
+                                    Destinations.SURVEY_ROUTE -> {
+                                        onNavigateToSurvey()
+                                    }
 
-                                DASHBOARD_ROUTE -> {
-                                    onNavigateToDashboard()
-                                }
+                                    Destinations.DASHBOARD_ROUTE -> {
+                                        onNavigateToDashboard()
+                                    }
 
-                                else -> {}
+                                    else -> {}
+                                }
                             }
                         }
                     )

@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +58,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.manasmalla.ahamsvasth.R
 import com.manasmalla.ahamsvasth.ui.Destinations
 import com.manasmalla.ahamsvasth.ui.theme.AhamSvasthaTheme
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,6 +83,8 @@ fun SignInScreen(
     }
 
     val focusManager = LocalFocusManager.current
+
+    val scope = rememberCoroutineScope()
 
     Scaffold(topBar = {
         CenterAlignedTopAppBar(title = {
@@ -147,8 +151,7 @@ fun SignInScreen(
                 onClick = {
                     focusManager.clearFocus()
                     onNavigateToSurvey()
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)
             ) {
@@ -160,16 +163,18 @@ fun SignInScreen(
             Text(text = stringResource(id = R.string.or_literal))
             OutlinedButton(
                 onClick = {
-                    when (onboardingViewModel.onContinueWithGoogle()) {
-                        Destinations.SURVEY_ROUTE -> {
-                            onNavigateToSurvey()
-                        }
+                    scope.launch {
+                        when (onboardingViewModel.onContinueWithGoogle()) {
+                            Destinations.SURVEY_ROUTE -> {
+                                onNavigateToSurvey()
+                            }
 
-                        Destinations.DASHBOARD_ROUTE -> {
-                            onNavigateToDashboard()
-                        }
+                            Destinations.DASHBOARD_ROUTE -> {
+                                onNavigateToDashboard()
+                            }
 
-                        else -> {}
+                            else -> {}
+                        }
                     }
                 }, modifier = Modifier
                     .fillMaxWidth()

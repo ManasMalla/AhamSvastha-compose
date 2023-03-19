@@ -18,43 +18,8 @@
 
 package com.manasmalla.ahamsvasth.ui.onboarding
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
-import com.manasmalla.ahamsvasth.ui.Destinations
-import kotlinx.coroutines.delay
-
-class OnboardingViewModel : ViewModel() {
-
-    var uiState: OnboardingUiState by mutableStateOf(OnboardingUiState.NoUser)
-        private set
-
-    suspend fun onHandleOnboardingTransaction(username: String): String {
-
-
-        uiState = OnboardingUiState.Loading
-        delay(1000)
-        uiState = OnboardingUiState.NoUser
-        //TODO #TRIAGE for login or register
-        return if (listOf(
-                "manasmalla",
-                "sampath",
-                "balatripuras"
-            ).contains(username)
-        ) Destinations.SIGN_IN_ROUTE else Destinations.SIGNUP_ROUTE
-
-    }
-
-    suspend fun onContinueWithGoogle(): String {
-        uiState = OnboardingUiState.Loading
-        delay(1000)
-        uiState = OnboardingUiState.NoUser
-        //TODO Not yet implemented
-        return Destinations.SURVEY_ROUTE
-    }
-
-    fun onForgotPassword() {
-        TODO("Not yet implemented")
-    }
+sealed class SignInUiState {
+    object Loading : SignInUiState()
+    object NoUser : SignInUiState()
+    object ForgotPassword : SignInUiState()
 }
