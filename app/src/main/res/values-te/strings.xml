@@ -18,7 +18,7 @@
 
 <resources>
     <string name="app_name">అహం స్వస్థ</string>
-    <string name="app_headline">మిమ్మల్ని మీరు ఆరోగ్యవంతం చేసుకోండి! మనసు | శరీరం | ఆత్మ</string>
+    <string name="app_headline">"ఆరోగ్యకరమైన జీవితానికి • మనసు • శరీరం • ఆత్మ"</string>
     <string name="password_literal">పాస్వర్డ్</string>
     <string name="username_literal">వినియోగదారు పేరు</string>
     <string name="register_literal">నమోదు చేసుకోండి</string>
@@ -29,4 +29,5 @@
     <string name="or_literal">లేదా</string>
     <string name="sign_in_literal">సైన్ ఇన్ చేయండి</string>
     <string name="forgot_password">పాస్‌వర్డ్ మర్చిపోయారా?</string>
+    <string name="your_web_client_id">818921527939-313sm4ae0ccm927h61539teudtkr993s.apps.googleusercontent.com</string>
 </resources>

@@ -18,7 +18,23 @@
 
 package com.manasmalla.ahamsvasth.ui.onboarding
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
+
 sealed class OnboardingUiState {
     object Loading : OnboardingUiState()
     object NoUser : OnboardingUiState()
+
+    object SignUp : OnboardingUiState()
+    object SignIn : OnboardingUiState()
+
 }
+
+data class UserSurveyData(
+    val gender: Int = 0,
+    val age: String = "",
+    val height: String = "",
+    val weight: String = "",
+    val lifestyle: Int = 0,
+    val diseases: SnapshotStateList<String> = mutableStateListOf(),
+    val period: Long? = null)

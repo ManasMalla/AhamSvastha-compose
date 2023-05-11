@@ -1,0 +1,111 @@
+{
+  "project_info": {
+    "project_number": "818921527939",
+    "firebase_url": "https://aham-svastha.firebaseio.com",
+    "project_id": "aham-svastha",
+    "storage_bucket": "aham-svastha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818921527939:android:fe2b1a96579d69eafbd9b6",
+        "android_client_info": {
+          "package_name": "com.manasmalla.ahamsvasth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818921527939-6uc6oupm7vp26ab17mj0n4o3lo5fr3js.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "0faae9d42d75ea116febef26d1cbef90c3ef5406"
+          }
+        },
+        {
+          "client_id": "818921527939-7dvslg3lbvk94v7ndah31qemufpg0mnb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "8788c8de511812226f453ab57a9b099a6d21e38c"
+          }
+        },
+        {
+          "client_id": "818921527939-ckl14as4tkqmiqtadnh80ejkeg25evbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "ee8d2958aed34045b1ba10025eed7f2db8cdadb6"
+          }
+        },
+        {
+          "client_id": "818921527939-hpn495tfh0n2u448tgn9o739lb65n44u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "f1f7fb71a30e510b7b623c6d8ee714a2ae8fed30"
+          }
+        },
+        {
+          "client_id": "818921527939-iu8g3tev3nl335f7amlr7km4lhkpg7dk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "9e85b3577d6203026e490979102105f642efe90a"
+          }
+        },
+        {
+          "client_id": "818921527939-lo2mrkhf3ecrnplna88628dqmameeo93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "b0c0bffb904cd200b6df8912707bcd22af113063"
+          }
+        },
+        {
+          "client_id": "818921527939-tde95pgbfl6d3mfrnu0i1vjgonap63gn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "6bb17d33b89989bcb2c80a0962b24f5e2424aa0e"
+          }
+        },
+        {
+          "client_id": "818921527939-umkvv6l4a0klr3mhm9eohkape63a79gj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.manasmalla.ahamsvasth",
+            "certificate_hash": "53473f2c7f41e229bffd42272c0521d31333a431"
+          }
+        },
+        {
+          "client_id": "818921527939-313sm4ae0ccm927h61539teudtkr993s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtCyK3MaPFrvDSgRYSHwokFS9E11sN8Dk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818921527939-313sm4ae0ccm927h61539teudtkr993s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "818921527939-0d37cv4phf7l3d3s2kbn4j34b151ftv9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.manasmalla.ahamsvastha"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

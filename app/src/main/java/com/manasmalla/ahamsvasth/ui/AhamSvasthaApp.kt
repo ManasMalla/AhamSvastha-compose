@@ -18,12 +18,16 @@
 
 package com.manasmalla.ahamsvasth.ui
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.manasmalla.ahamsvasth.ui.onboarding.SignInScreen
 import com.manasmalla.ahamsvasth.ui.onboarding.SignUpScreen
+import com.manasmalla.ahamsvasth.ui.onboarding.SurveyScreen
 import com.manasmalla.ahamsvasth.ui.onboarding.WelcomeScreen
 
 object Destinations {
@@ -35,11 +39,11 @@ object Destinations {
 }
 
 @Composable
-fun AhamSvasthaApp(isFirstRun: Boolean = true) {
+fun AhamSvasthaApp(isFirstRun: Boolean) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = if (isFirstRun) Destinations.WELCOME_ROUTE else Destinations.DASHBOARD_ROUTE,
+        startDestination = if (isFirstRun) (if(Firebase.auth.currentUser == null) Destinations.WELCOME_ROUTE else Destinations.SURVEY_ROUTE) else Destinations.DASHBOARD_ROUTE,
     ) {
         composable(Destinations.WELCOME_ROUTE) {
             WelcomeScreen(onNavigateToSignIn = { username ->
@@ -71,10 +75,17 @@ fun AhamSvasthaApp(isFirstRun: Boolean = true) {
             })
         }
         composable(Destinations.SURVEY_ROUTE) {
-
+            SurveyScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onRegister = {
+                    navController.navigate(Destinations.DASHBOARD_ROUTE)
+                }
+            )
         }
         composable(Destinations.DASHBOARD_ROUTE) {
-
+            Text("Dashboard")
         }
     }
 }

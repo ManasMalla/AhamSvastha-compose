@@ -18,7 +18,7 @@
 
 <resources>
     <string name="app_name">अहम् स्वस्थ</string>
-    <string name="app_headline">अपने आप को स्वस्थ बनाओ! मन | शरीर | आत्मा</string>
+    <string name="app_headline">अपने आप को स्वस्थ बनाओ • मन • शरीर • आत्मा</string>
     <string name="password_literal">पासवर्ड</string>
     <string name="email_address_literal">ईमेल</string>
     <string name="username_literal">उपयोगकर्ता नाम</string>
@@ -30,4 +30,5 @@
     <string name="or_literal">अथवा</string>
     <string name="sign_in_literal">दाखिल करना</string>
     <string name="forgot_password">पासवर्ड भूल गए?</string>
+    <string name="your_web_client_id">818921527939-313sm4ae0ccm927h61539teudtkr993s.apps.googleusercontent.com</string>
 </resources>

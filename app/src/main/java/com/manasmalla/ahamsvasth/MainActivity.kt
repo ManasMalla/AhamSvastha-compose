@@ -19,19 +19,50 @@
 package com.manasmalla.ahamsvasth
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.util.Log
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.core.view.WindowCompat
 import com.manasmalla.ahamsvasth.ui.AhamSvasthaApp
 import com.manasmalla.ahamsvasth.ui.theme.AhamSvasthaTheme
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        val firstRun: Flow<Boolean> = applicationContext.dataStore.data
+            .map { preferences ->
+                // No type safety.
+                preferences[IS_FIRST_RUN_KEY] ?: true
+            }
         setContent {
+            var isFirstRun by remember{
+                mutableStateOf(true)
+            }
+            var uiState by remember{
+                mutableStateOf(false)
+            }
+
+            LaunchedEffect(true) {
+                launch {
+                    isFirstRun = firstRun.first()
+                    Log.d("isFirstRun", isFirstRun.toString())
+                    uiState = true
+                }
+            }
             AhamSvasthaTheme {
-                AhamSvasthaApp()
+                if (!uiState) CircularProgressIndicator() else AhamSvasthaApp(isFirstRun)
             }
         }
     }

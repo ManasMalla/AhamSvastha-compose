@@ -18,13 +18,14 @@
 
 package com.manasmalla.ahamsvasth.ui.onboarding
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronLeft
@@ -33,18 +34,22 @@ import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +60,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.manasmalla.ahamsvasth.R
 import com.manasmalla.ahamsvasth.ui.theme.AhamSvasthaTheme
+import com.manasmalla.ahamsvasth.ui.theme.MaterialYouClipper
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
@@ -66,6 +74,9 @@ fun SignUpScreen(
     onNavigateUp: () -> Unit = {},
     onNavigateToSurvey: (String) -> Unit = {}
 ) {
+
+    val onboardingViewModel: OnboardingViewModel = viewModel()
+
     var username by remember {
         mutableStateOf(startingUsername ?: "")
     }
@@ -79,11 +90,15 @@ fun SignUpScreen(
         mutableStateOf(false)
     }
 
+    val snackbarHostState = remember{
+        SnackbarHostState()
+    }
+    val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
 
     Scaffold(topBar = {
         CenterAlignedTopAppBar(title = {
-            Text("Register")
+            Text(stringResource(id = R.string.register_literal))
         }, actions = {
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Rounded.HelpOutline, contentDescription = "Help")
@@ -97,79 +112,102 @@ fun SignUpScreen(
                 )
             }
         })
+    }, snackbarHost = {
+        SnackbarHost(snackbarHostState)
     }) {
-        Column(
-            modifier = modifier
-                .padding(it)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Surface(
-                modifier = Modifier
-                    .size(180.dp)
-                    .padding(24.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = CircleShape,
-                content = {})
-            OutlinedTextField(
-                value = username,
-                onValueChange = { userInput ->
-                    username = userInput
-                },
-                placeholder = {
-                    Text(text = stringResource(R.string.username_literal))
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
-            OutlinedTextField(value = email, onValueChange = { userInput ->
-                email = userInput
-            }, placeholder = {
-                Text(text = stringResource(R.string.email_address_literal))
-            }, modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
-            )
-            OutlinedTextField(
-                value = password,
-                onValueChange = { userInput ->
-                    password = userInput
-                },
-                placeholder = {
-                    Text(text = stringResource(R.string.password_literal))
-                },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-                shape = MaterialTheme.shapes.medium,
-                trailingIcon = {
-                    IconButton(onClick = {
-                        showPassword = !showPassword
-                    }) {
-                        Icon(
-                            if (showPassword) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
-                            contentDescription = null
-                        )
+        AnimatedContent(targetState = onboardingViewModel.uiState, label = "") { uiState ->
+            when(uiState){
+                OnboardingUiState.Loading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(
+                                Alignment.Center
+                            )
+                    )
+                }
+              else -> Column(
+                    modifier = modifier
+                        .padding(it)
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Surface(
+                        modifier = Modifier
+                            .size(240.dp)
+                            .padding(24.dp),
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        shape = MaterialYouClipper(),
+                        content = {})
+                    OutlinedTextField(
+                        value = username,
+                        onValueChange = { userInput ->
+                            username = userInput
+                        },
+                        placeholder = {
+                            Text(text = stringResource(R.string.username_literal))
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = MaterialTheme.shapes.medium,
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                    )
+                    OutlinedTextField(value = email, onValueChange = { userInput ->
+                        email = userInput
+                    }, placeholder = {
+                        Text(text = stringResource(R.string.email_address_literal))
+                    }, modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = MaterialTheme.shapes.medium,
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                    )
+                    OutlinedTextField(
+                        value = password,
+                        onValueChange = { userInput ->
+                            password = userInput
+                        },
+                        placeholder = {
+                            Text(text = stringResource(R.string.password_literal))
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        shape = MaterialTheme.shapes.medium,
+                        trailingIcon = {
+                            IconButton(onClick = {
+                                showPassword = !showPassword
+                            }) {
+                                Icon(
+                                    if (showPassword) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
+                    )
+                    Button(
+                        onClick = {
+                            focusManager.clearFocus()
+                            scope.launch {
+                                onboardingViewModel.registerUser(username, email, password, showSnackbar = { message ->
+                                    scope.launch{
+                                        snackbarHostState.showSnackbar(message)
+                                    }
+                                }){
+                                    onNavigateToSurvey(username)
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp)
+                    ) {
+                        Text(text = stringResource(R.string.register_literal))
                     }
-                },
-                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
-            )
-            Button(
-                onClick = {
-                    focusManager.clearFocus()
-                    onNavigateToSurvey(username)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            ) {
-                Text(text = stringResource(R.string.register_literal))
-            }
 
+                }
+            }
         }
     }
 }

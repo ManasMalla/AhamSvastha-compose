@@ -18,5 +18,10 @@
 
 <resources>
 
-    <style name="Theme.AhamSvastha" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.AhamSvastha" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">?attr/colorSurface</item>
+    </style>
 </resources>
